@@ -21,7 +21,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-def detect_categorical_columns(df: pd.DataFrame, max_unique_ratio: float = 0.5) -> List[str]:
+def detect_categorical_columns(df: pd.DataFrame, max_unique_ratio: float = 0.9) -> List[str]:
     """
     Automatically detect categorical columns in a dataframe
     
@@ -37,11 +37,12 @@ def detect_categorical_columns(df: pd.DataFrame, max_unique_ratio: float = 0.5) 
     
     for col in df.columns:
         # Skip columns with high percentage of missing values
-        if df[col].isna().mean() > 0.5:
+        if df[col].isna().mean() > 0.9:
             continue
             
         # Object columns are likely categorical
         if df[col].dtype == 'object':
+            # All object columns are considered categorical unless they're like unique IDs
             unique_ratio = df[col].nunique() / num_rows
             if unique_ratio <= max_unique_ratio:
                 categorical_cols.append(col)
@@ -63,13 +64,13 @@ def preview_data(df: pd.DataFrame) -> None:
     
     print("\nColumn information:")
     for col in df.columns:
-        col_type = df[col].dtypesv
+        col_type = df[col].dtypes
         unique_count = df[col].nunique()
         missing = df[col].isna().sum()
         missing_percent = missing / len(df) * 100
         print(f"- {col}: type={col_type}, unique={unique_count}, missing={missing} ({missing_percent:.1f}%)")
 
-def main0(put_path: str = config2["INPUT_FILE"], 
+def main0(input_path: str = config2["INPUT_FILE"], 
          output_path: str = config2["OUTPUT_FILE"],
          target_column: str = config2["TARGET_COLUMN"],
          columns: List[str] = config2["COLUMNS_TO_CLEAN"],
