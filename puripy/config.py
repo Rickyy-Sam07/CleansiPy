@@ -1,15 +1,34 @@
+# ================================================
+# CleansiPy Configuration File
+# ================================================
+# 
+# IMPORTANT: Before using CleansiPy, you MUST update the file paths below!
+# 
+# 1. Replace "input_data.csv", "input_numeric.csv", etc. with YOUR actual file paths
+# 2. For categorical data: update COLUMNS_TO_CLEAN with your column names
+# 3. For numeric data: update numeric_cols, constraints, outliers, and precision with your column names
+# 4. Make sure your input files exist in the specified locations
+#
+# Example file paths:
+#   - Absolute path: r"C:\Users\YourName\Documents\my_data.csv"
+#   - Relative path: r"data\sales_data.csv" (relative to where you run CleansiPy)
+#   - Current directory: r"my_file.csv"
+#
+# ================================================
+
 #############################################
 #config2 for categoricaldata                   #
 #############################################
 # EDIT THESE SETTINGS AS NEEDED
+# Replace the file paths below with your actual data file paths
 config2 = {
-    "INPUT_FILE": r"testdata\xx.csv",              # Path to your input CSV file
-    "OUTPUT_FILE": r"testdata\cleaned.csv",        # Where to save the cleaned data
+    "INPUT_FILE": r"input_data.csv",              # Path to your input CSV file (change this!)
+    "OUTPUT_FILE": r"cleaned_categorical.csv",        # Where to save the cleaned data
     "TARGET_COLUMN": None,               # Optional target column for supervised learning
-    "COLUMNS_TO_CLEAN": ["category", "other_cat_col"],  # Set to None for auto-detection or list specific columns
+    "COLUMNS_TO_CLEAN": None,  # Set to None for auto-detection or list specific columns like ["category", "type"]
     "EXCLUDE_COLUMNS": [],               # Columns to exclude from cleaning
     "EXPLORE_ONLY": False,               # Set to True to only explore data without cleaning
-    "FILE_PATH": r"testdata\cleaning_report.txt",  # Path to save the cleaning report
+    "FILE_PATH": r"categorical_cleaning_report.txt",  # Path to save the cleaning report
     
     # Advanced Settings
     "FIX_TYPOS": True,                   # Whether to fix typos in text
@@ -23,20 +42,22 @@ config2 = {
 
 # NUMERIC DATA CONFIG-
 # --------------------------
+# Replace the file paths below with your actual data file paths
 # Modify these settings based on your specific dataset requirements.This configuration controls how the data cleaning pipeline processes your dataset.
 
 DEFAULT_CONFIG = {
 
-    'input_file': r'testdata\data.csv',  # Path to your input CSV file
-    'output_file': r'testdata\cleaned_output.csv',  # Path for output cleaned CSV file
-    'report_file': r'testdata\textreport.txt',  # Path to save cleaning reportq
+    'input_file': r'input_numeric.csv',  # Path to your input CSV file (change this!)
+    'output_file': r'cleaned_numeric.csv',  # Path for output cleaned CSV file
+    'report_file': r'numeric_cleaning_report.txt',  # Path to save cleaning report
 
     # Type Conversion Settings
     # -----------------------
     # Specify which columns should be converted to numeric types
     # For non-numeric datasets, set this to [] or remove columns that aren't numeric
+    # CHANGE THESE COLUMN NAMES TO MATCH YOUR DATA:
     'type_conversion': {
-        'numeric_cols': ['Sales_Before', 'Sales_After', 'Customer_Satisfaction_Before', 'Customer_Satisfaction_After']
+        'numeric_cols': []  # Example: ['sales', 'revenue', 'age'] - replace with your column names
     },
     
     # Missing Value Handling
@@ -52,12 +73,10 @@ DEFAULT_CONFIG = {
     # ----------------------------
     # Define valid ranges/rules for each column using lambda functions
     # correction: how to replace invalid values ('median', 'mean', 'mode')
+    # CHANGE THESE TO MATCH YOUR DATA COLUMNS:
     'data_errors': {
         'constraints': {
-            'Sales_Before': lambda x: (x >= 50) & (x <= 500),  # Valid sales range
-            'Sales_After': lambda x: (x >= 50) & (x <= 700),  # Valid sales range
-            'Customer_Satisfaction_Before': lambda x: (x >= 0) & (x <= 100),  # Percentage-based score
-            'Customer_Satisfaction_After': lambda x: (x >= 0) & (x <= 100)  # Percentage-based score
+            # Example: 'price': lambda x: (x >= 0) & (x <= 10000),  # Add your column constraints here
         },
         'correction': 'median'  # Use median of valid values to replace invalid ones
     },
@@ -67,10 +86,11 @@ DEFAULT_CONFIG = {
     # method: technique to detect outliers ('iqr', 'zscore')
     # action: how to handle outliers ('cap', 'remove')
     # columns: specific columns to check for outliers
+    # CHANGE THESE TO MATCH YOUR DATA COLUMNS:
     'outliers': {
         'method': 'iqr',  # Interquartile Range method (Q1-1.5*IQR to Q3+1.5*IQR)
         'action': 'cap',  # Cap values at the boundaries instead of removing rows
-        'columns': ['Sales_Before', 'Sales_After', 'Customer_Satisfaction_Before', 'Customer_Satisfaction_After']  # Columns to check
+        'columns': []  # Example: ['price', 'quantity'] - add your numeric column names
     },
     
     # Duplicate Handling
@@ -85,11 +105,10 @@ DEFAULT_CONFIG = {
     # Numeric Precision
     # ----------------
     # Control decimal places for each column (0 = integer, >0 = decimal places)
+    # CHANGE THESE TO MATCH YOUR DATA COLUMNS:
     'precision': {
-        'Sales_Before': 2,      # Two decimal places for currency
-        'Sales_After': 2,       # Two decimal places for currency
-        'Customer_Satisfaction_Before': 1,  # One decimal place for satisfaction scores
-        'Customer_Satisfaction_After': 1    # One decimal place for satisfaction scores
+        # Example: 'price': 2,  # Two decimal places for currency
+        # Example: 'rating': 1,  # One decimal place for ratings
     }
 }
 
@@ -98,10 +117,11 @@ DEFAULT_CONFIG = {
 #   date&time cleaner                 #
 #############################################
 # EDIT THESE SETTINGS AS NEEDED
+# Replace the file paths below with your actual data file paths
 config3 = {
-    "INPUT_FILE": r"testdata\dates.csv",             # Path to your input CSV file
-    "OUTPUT_FILE": r"testdata\cleaned.csv",          # Where to save the cleaned data
-    "REPORT_FILE": r"testdata\date_cleaning_report.txt",  # Path to save the cleaning report
+    "INPUT_FILE": r"input_dates.csv",             # Path to your input CSV file (change this!)
+    "OUTPUT_FILE": r"cleaned_dates.csv",          # Where to save the cleaned data
+    "REPORT_FILE": r"datetime_cleaning_report.txt",  # Path to save the cleaning report
 
     # Date column settings
     "DATE_COLUMNS": None,                  # Set to None for auto-detection or list specific columns
@@ -134,6 +154,7 @@ config3 = {
 #==========================================
 #TEXT CLEANING DATA CONFIGURATION
 #======================================
+# Replace the file paths below with your actual data file paths
 
 config = {
     'lowercase': True,              # Convert all text to lowercase
@@ -153,9 +174,9 @@ config = {
     'language': 'english',          # Language for stopwords, lemmatization, and spell checking
     'custom_stopwords': None,       # List of additional stopwords to remove (e.g., ['foo', 'bar']); None for default
     'custom_profanity': None,       # List of additional profane words to filter; None for default
-    'input_file': r"testdata\test.csv",   # Path to input CSV file
-    'output_file': r"testdata\cleaned_text.csv",  # Path to save cleaned output
-    'report_file': r"testdata\text_cleaning_report.txt",  # Path to save cleaning report
+    'input_file': r"text_test.csv",   # Path to input CSV file (change this!)
+    'output_file': r"cleaned_text.csv",  # Path to save cleaned output
+    'report_file': r"text_cleaning_report.txt",  # Path to save cleaning report
     'text_column': None,            # Specify text column to clean (None for auto-detect)
     'sample_count': 5               # Number of samples to show in report
 }
